@@ -5,6 +5,7 @@ import { lists } from "./assets/mock-data";
 import { Database } from "./data/database";
 import { CardHandler, ListHandler } from "./handlers/handlers";
 import { ReorderService } from "./services/reorder.service";
+import { loggerInitialization } from './services/logger.service';
 
 const PORT = 3005;
 
@@ -31,5 +32,7 @@ const onConnection = (socket: Socket): void => {
 io.on("connection", onConnection);
 
 httpServer.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
+
+loggerInitialization();
 
 export { httpServer };

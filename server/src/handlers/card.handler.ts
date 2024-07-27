@@ -4,6 +4,12 @@ import { CardEvent } from '../common/enums/enums';
 import { Card } from '../data/models/card';
 import { SocketHandler } from './socket.handler';
 import { performance } from 'perf_hooks';
+import { logger } from '../logger/logger';
+import { consoleSubscriber, fileSubscriber, logOperation } from '../services/logger.service';
+
+// PATTERN:{Observer}
+fileSubscriber.subscribe(logger);
+consoleSubscriber.subscribe(logger);
 
 class CardHandler extends SocketHandler {
   public handleConnection(socket: Socket): void {
@@ -27,18 +33,17 @@ class CardHandler extends SocketHandler {
     this.updateListAndLog(CardEvent.CREATE, start, updatedLists);
   }
 
-  private reorderCards(
-    {
-      sourceIndex,
-      destinationIndex,
-      sourceListId,
-      destinationListId
-    }: {
-      sourceIndex: number;
-      destinationIndex: number;
-      sourceListId: string;
-      destinationListId: string;
-    }): void {
+  private reorderCards({
+                         sourceIndex,
+                         destinationIndex,
+                         sourceListId,
+                         destinationListId
+                       }: {
+    sourceIndex: number;
+    destinationIndex: number;
+    sourceListId: string;
+    destinationListId: string;
+  }): void {
     const start = performance.now();
     const lists = this.db.getData();
     const reordered = this.reorderService.reorderCards({
@@ -113,9 +118,10 @@ class CardHandler extends SocketHandler {
     this.updateListAndLog(CardEvent.DUPLICATE, start, updatedLists);
   }
 
-  private updateListAndLog(_, start: number, updatedLists: any): void {
+  private updateListAndLog(eventName, start: number, updatedLists: any): void {
     this.db.setData(updatedLists);
     this.updateLists();
+    logOperation(eventName, start);
   }
 }
 

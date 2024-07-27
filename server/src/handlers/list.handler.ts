@@ -4,6 +4,12 @@ import { ListEvent } from "../common/enums/enums";
 import { List } from "../data/models/list";
 import { SocketHandler } from "./socket.handler";
 import { performance } from 'perf_hooks';
+import { logger } from '../logger/logger';
+import { consoleSubscriber, fileSubscriber, logOperation } from '../services/logger.service';
+
+// PATTERN:{Observer}
+fileSubscriber.subscribe(logger);
+consoleSubscriber.subscribe(logger);
 
 class ListHandler extends SocketHandler {
   public handleConnection(socket: Socket): void {
@@ -12,7 +18,6 @@ class ListHandler extends SocketHandler {
     socket.on(ListEvent.REORDER, this.reorderLists.bind(this));
     socket.on(ListEvent.RENAME, this.renameList.bind(this));
     socket.on(ListEvent.DELETE, this.deleteList.bind(this));
-
   }
 
   private getLists(callback: (cards: List[]) => void): void {
@@ -56,11 +61,11 @@ class ListHandler extends SocketHandler {
     this.updateListAndLog(ListEvent.RENAME, start, updatedLists);
   }
 
-  private updateListAndLog(_, start: number, updatedLists: any): void {
+  private updateListAndLog(eventName, start: number, updatedLists: any): void {
     this.db.setData(updatedLists);
     this.updateLists();
+    logOperation(eventName, start);
   }
 }
-
 
 export { ListHandler };

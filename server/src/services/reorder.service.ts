@@ -1,13 +1,27 @@
 import { Card } from '../data/models/card';
 import { List } from '../data/models/list';
 
+// PATTERN:{Proxy}
+function logMethodCalls(target: any, key: string, descriptor: PropertyDescriptor) {
+  const originalMethod = descriptor.value;
+
+  descriptor.value = function (...args: any[]) {
+    console.log(`Function ${key} is called with arguments: `, args);
+    return originalMethod.apply(this, args);
+  };
+
+  return descriptor;
+}
+
 class ReorderService {
+  @logMethodCalls
   public reorder<T>(items: T[], startIndex: number, endIndex: number): T[] {
     const card = items[startIndex];
     const listWithRemoved = this.remove(items, startIndex);
     return this.insert(listWithRemoved, endIndex, card);
   }
 
+  @logMethodCalls
   public reorderCards(
     {
       lists,
@@ -30,7 +44,7 @@ class ReorderService {
       return lists;
     }
 
-    const newLists = lists.map((list) => {
+    return lists.map((list) => {
       if (list.id === sourceListId) {
         list.setCards(this.remove(list.cards, sourceIndex));
       }
@@ -41,14 +55,14 @@ class ReorderService {
 
       return list;
     });
-
-    return newLists;
   }
 
+  @logMethodCalls
   private remove<T>(items: T[], index: number): T[] {
     return [...items.slice(0, index), ...items.slice(index + 1)];
   }
 
+  @logMethodCalls
   private insert<T>(items: T[], index: number, value: T): T[] {
     return [...items.slice(0, index), value, ...items.slice(index)];
   }
