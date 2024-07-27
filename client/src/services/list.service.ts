@@ -3,15 +3,6 @@ import { Card } from '../common/types/card.type';
 import { ListEvent } from '../common/enums/enums';
 import { List } from '../common/types/list.type';
 
-// export const removeCardFromList = (cards: Card[], index: number): Card[] =>
-//   cards.slice(0, index).concat(cards.slice(index + 1));
-//
-// export const addCardToList = (
-//   cards: Card[],
-//   index: number,
-//   card: Card
-// ): Card[] => cards.slice(0, index).concat(card).concat(cards.slice(index));
-
 export const handleCreateList = (name: string) => {
   name.trim() !== '' ? socket.emit(ListEvent.CREATE, name) : null;
 };
