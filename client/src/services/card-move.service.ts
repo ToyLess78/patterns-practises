@@ -17,7 +17,7 @@ export const moveCardBetweenLists = (
     removeCardFromList(sourceCards, sourceIndex)
   );
 
-  return updateListCards(updatedSourceLists, destinationListId, _ =>
+  return updateListCards(updatedSourceLists, destinationListId, () =>
     addCardToList(destinationCards, destinationIndex, movedCard)
   );
 };

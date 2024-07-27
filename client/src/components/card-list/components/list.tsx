@@ -1,8 +1,8 @@
-import { DroppableProvided } from "@hello-pangea/dnd";
+import { DroppableProvided } from '@hello-pangea/dnd';
 
-import { type Card } from "../../../common/types/types";
-import { DropZone } from "../styled/drop-zone";
-import { Cards } from "./cards";
+import { type Card } from '../../../common/types/types';
+import { DropZone } from '../styled/drop-zone';
+import { Cards } from './cards';
 
 type Props = {
   dropProvided: DroppableProvided;
@@ -14,9 +14,7 @@ const List = ({ cards, dropProvided, listId }: Props) => {
   return (
     <div className="list-container">
       <DropZone ref={dropProvided.innerRef}>
-        <Cards
-          cards={cards}
-          listId={listId}/>
+        <Cards cards={cards} listId={listId} />
         {dropProvided.placeholder}
       </DropZone>
     </div>

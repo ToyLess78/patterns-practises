@@ -1,11 +1,15 @@
-import type { Socket } from "socket.io";
+import type { Socket } from 'socket.io';
 
-import { ListEvent } from "../common/enums/enums";
-import { List } from "../data/models/list";
-import { SocketHandler } from "./socket.handler";
+import { ListEvent } from '../common/enums/enums';
+import { List } from '../data/models/list';
+import { SocketHandler } from './socket.handler';
 import { performance } from 'perf_hooks';
 import { logger } from '../logger/logger';
-import { consoleSubscriber, fileSubscriber, logOperation } from '../services/logger.service';
+import {
+  consoleSubscriber,
+  fileSubscriber,
+  logOperation
+} from '../services/logger.service';
 
 // PATTERN:{Observer}
 fileSubscriber.subscribe(logger);
@@ -61,7 +65,11 @@ class ListHandler extends SocketHandler {
     this.updateListAndLog(ListEvent.RENAME, start, updatedLists);
   }
 
-  private updateListAndLog(eventName, start: number, updatedLists: any): void {
+  private updateListAndLog(
+    eventName,
+    start: number,
+    updatedLists: List[]
+  ): void {
     this.db.setData(updatedLists);
     this.updateLists();
     logOperation(eventName, start);

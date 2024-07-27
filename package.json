@@ -2,7 +2,11 @@
   "name": "bsa-patterns-hw",
   "version": "0.0.0",
   "description": "Starter for Patterns Practises and Principles homework. Binary Studio Academy",
-  "scripts": {},
+  "scripts": {
+    "lint": "eslint 'client/src/**/*.{js,mjs,cjs,ts,jsx,tsx}' 'server/src/**/*.{js,mjs,cjs,ts,jsx,tsx}'",
+    "lint:fix": "eslint 'client/src/**/*.{js,mjs,cjs,ts,jsx,tsx}' 'server/src/**/*.{js,mjs,cjs,ts,jsx,tsx}' --fix",
+    "format": "prettier --write 'client/src/**/*.{js,mjs,cjs,ts,jsx,tsx,json,css,scss,md}' 'server/src/**/*.{js,mjs,cjs,ts,jsx,tsx,json,css,scss,md}'"
+  },
   "author": "Vitalii Yarmus",
   "license": "MIT",
   "workspaces": [
@@ -14,6 +18,22 @@
     "npm": ">=8 <9"
   },
   "devDependencies": {
-    "typescript": "4.9.5"
+    "@eslint/js": "^9.8.0",
+    "@types/node": "^20.14.12",
+    "@typescript-eslint/eslint-plugin": "^7.17.0",
+    "@typescript-eslint/parser": "^7.17.0",
+    "dotenv": "^16.4.5",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.9.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "globals": "^15.8.0",
+    "prettier": "^3.3.3",
+    "typescript": "4.9.5",
+    "webpack": "^5.93.0",
+    "webpack-cli": "^5.1.4"
   }
 }

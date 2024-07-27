@@ -2,15 +2,17 @@ import { Card } from '../data/models/card';
 import { List } from '../data/models/list';
 
 // PATTERN:{Proxy}
-function logMethodCalls(target: any, key: string, descriptor: PropertyDescriptor) {
-  const originalMethod = descriptor.value;
+function logMethodCalls<T extends object>(
+  target: T,
+  key: string | symbol,
+  descriptor: TypedPropertyDescriptor<(...args: unknown[]) => unknown>
+): void {
+  const originalMethod = descriptor.value as (...args: unknown[]) => unknown;
 
-  descriptor.value = function (...args: any[]) {
-    console.log(`Function ${key} is called with arguments: `, args);
+  descriptor.value = function (...args: unknown[]): unknown {
+    console.log(`Function ${String(key)} is called with arguments: `, args);
     return originalMethod.apply(this, args);
   };
-
-  return descriptor;
 }
 
 class ReorderService {
@@ -22,23 +24,22 @@ class ReorderService {
   }
 
   @logMethodCalls
-  public reorderCards(
-    {
-      lists,
-      sourceIndex,
-      destinationIndex,
-      sourceListId,
-      destinationListId
-    }: {
-      lists: List[];
-      sourceIndex: number;
-      destinationIndex: number;
-      sourceListId: string;
-      destinationListId: string;
-    }): List[] {
-
-    const target: Card = lists.find((list) => list.id === sourceListId)
-      ?.cards?.[sourceIndex];
+  public reorderCards({
+    lists,
+    sourceIndex,
+    destinationIndex,
+    sourceListId,
+    destinationListId
+  }: {
+    lists: List[];
+    sourceIndex: number;
+    destinationIndex: number;
+    sourceListId: string;
+    destinationListId: string;
+  }): List[] {
+    const target: Card | undefined = lists.find(
+      (list) => list.id === sourceListId
+    )?.cards?.[sourceIndex];
 
     if (!target) {
       return lists;

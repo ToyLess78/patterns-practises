@@ -17,9 +17,15 @@ export class FileSubscriber {
 
   private writeToFile(message: string): void {
     try {
-      fs.writeFileSync(this.logFilePath, messagePrefix + message + '\n', {flag: 'a'});
-    } catch (error: any) {
-      console.error('Error writing to file:', messagePrefix + error.message);
+      fs.writeFileSync(this.logFilePath, messagePrefix + message + '\n', {
+        flag: 'a'
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error writing to file:', messagePrefix + error.message);
+      } else {
+        console.error('Unknown error:', error);
+      }
     }
   }
 }

@@ -1,4 +1,7 @@
-import type { DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
+import type {
+  DraggableProvided,
+  DraggableStateSnapshot
+} from '@hello-pangea/dnd';
 import { Draggable } from '@hello-pangea/dnd';
 
 import { type Card } from '../../common/types/types';
@@ -10,7 +13,10 @@ import { Footer } from './components/footer';
 import { Container } from './styled/container';
 import { Header } from './styled/header';
 import { handleCreateCard } from '../../services/card.service';
-import { handleDeleteList, handleRenameList } from '../../services/list.service';
+import {
+  handleDeleteList,
+  handleRenameList
+} from '../../services/list.service';
 
 type Props = {
   listId: string;
@@ -19,10 +25,9 @@ type Props = {
   index: number;
 };
 
-export const Column = ({listId, listName, cards, index}: Props) => {
-
+export const Column = ({ listId, listName, cards, index }: Props) => {
   const deleteOnClick = () => {
-    handleDeleteList(listId)
+    handleDeleteList(listId);
   };
 
   return (
@@ -41,7 +46,9 @@ export const Column = ({listId, listName, cards, index}: Props) => {
             <Title
               aria-label={listName}
               title={listName}
-              onChange={(e) => {handleRenameList(listId, e.trim() || 'List Name')}}
+              onChange={(e) => {
+                handleRenameList(listId, e.trim() || 'List Name');
+              }}
               fontSize="large"
               width={200}
               isBold
@@ -49,10 +56,12 @@ export const Column = ({listId, listName, cards, index}: Props) => {
             <Splitter />
             <DeleteButton color="#FFF0" onClick={deleteOnClick} />
           </Header>
-          <CardsList listId={listId} listType="CARD" cards={cards}/>
-          <Footer onCreateCard={(name) => {
-            handleCreateCard(listId, name);
-          }}/>
+          <CardsList listId={listId} listType="CARD" cards={cards} />
+          <Footer
+            onCreateCard={(name) => {
+              handleCreateCard(listId, name);
+            }}
+          />
         </Container>
       )}
     </Draggable>

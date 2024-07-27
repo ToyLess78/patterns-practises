@@ -8,21 +8,31 @@ const reorderCards = (
   source: DraggableLocation,
   destination: DraggableLocation
 ): List[] => {
-  const {droppableId: sourceListId, index: sourceIndex} = source;
-  const {droppableId: destinationListId, index: destinationIndex} = destination;
+  const { droppableId: sourceListId, index: sourceIndex } = source;
+  const { droppableId: destinationListId, index: destinationIndex } =
+    destination;
 
   const isSameList = sourceListId === destinationListId;
 
   if (isSameList) {
-    return updateListCards(lists, sourceListId, cards =>
+    return updateListCards(lists, sourceListId, (cards) =>
       reorderArray(cards, sourceIndex, destinationIndex)
     );
   }
 
-  return moveCardBetweenLists(lists, sourceListId, destinationListId, sourceIndex, destinationIndex);
+  return moveCardBetweenLists(
+    lists,
+    sourceListId,
+    destinationListId,
+    sourceIndex,
+    destinationIndex
+  );
 };
 
-const reorderLists = (items: List[], startIndex: number, endIndex: number): List[] =>
-  reorderArray([...items], startIndex, endIndex);
+const reorderLists = (
+  items: List[],
+  startIndex: number,
+  endIndex: number
+): List[] => reorderArray([...items], startIndex, endIndex);
 
 export { reorderLists, reorderCards };

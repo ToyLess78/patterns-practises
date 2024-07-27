@@ -5,7 +5,12 @@ import { Card } from '../data/models/card';
 import { SocketHandler } from './socket.handler';
 import { performance } from 'perf_hooks';
 import { logger } from '../logger/logger';
-import { consoleSubscriber, fileSubscriber, logOperation } from '../services/logger.service';
+import {
+  consoleSubscriber,
+  fileSubscriber,
+  logOperation
+} from '../services/logger.service';
+import { List } from '../data/models/list';
 
 // PATTERN:{Observer}
 fileSubscriber.subscribe(logger);
@@ -18,7 +23,10 @@ class CardHandler extends SocketHandler {
     socket.on(CardEvent.RENAME, this.renameCard.bind(this));
     socket.on(CardEvent.DELETE, this.deleteCard.bind(this));
     socket.on(CardEvent.DUPLICATE, this.duplicateCard.bind(this));
-    socket.on(CardEvent.CHANGE_DESCRIPTION, this.changeCardDescription.bind(this));
+    socket.on(
+      CardEvent.CHANGE_DESCRIPTION,
+      this.changeCardDescription.bind(this)
+    );
   }
 
   public createCard(listId: string, cardName: string): void {
@@ -34,11 +42,11 @@ class CardHandler extends SocketHandler {
   }
 
   private reorderCards({
-                         sourceIndex,
-                         destinationIndex,
-                         sourceListId,
-                         destinationListId
-                       }: {
+    sourceIndex,
+    destinationIndex,
+    sourceListId,
+    destinationListId
+  }: {
     sourceIndex: number;
     destinationIndex: number;
     sourceListId: string;
@@ -54,7 +62,6 @@ class CardHandler extends SocketHandler {
       destinationListId
     });
     this.updateListAndLog(CardEvent.REORDER, start, reordered);
-
   }
 
   private deleteCard(listId: string, cardId: string): void {
@@ -86,13 +93,17 @@ class CardHandler extends SocketHandler {
     this.updateListAndLog(CardEvent.RENAME, start, updatedLists);
   }
 
-  private changeCardDescription(listId: string, cardId: string, newDescription: string): void {
+  private changeCardDescription(
+    listId: string,
+    cardId: string,
+    newDescription: string
+  ): void {
     const start = performance.now();
     const lists = this.db.getData();
     const updatedLists = lists.map((list) => {
       if (list.id === listId) {
         list.cards = list.cards.map((card) => {
-          (card.id === cardId) && (card.description = newDescription);
+          card.id === cardId && (card.description = newDescription);
           return card;
         });
       }
@@ -118,7 +129,11 @@ class CardHandler extends SocketHandler {
     this.updateListAndLog(CardEvent.DUPLICATE, start, updatedLists);
   }
 
-  private updateListAndLog(eventName, start: number, updatedLists: any): void {
+  private updateListAndLog(
+    eventName,
+    start: number,
+    updatedLists: List[]
+  ): void {
     this.db.setData(updatedLists);
     this.updateLists();
     logOperation(eventName, start);
