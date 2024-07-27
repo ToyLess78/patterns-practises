@@ -1,28 +1,28 @@
-import { Card } from "../data/models/card";
-import { List } from "../data/models/list";
+import { Card } from '../data/models/card';
+import { List } from '../data/models/list';
 
 class ReorderService {
   public reorder<T>(items: T[], startIndex: number, endIndex: number): T[] {
     const card = items[startIndex];
     const listWithRemoved = this.remove(items, startIndex);
-    const result = this.insert(listWithRemoved, endIndex, card);
-
-    return result;
+    return this.insert(listWithRemoved, endIndex, card);
   }
 
-  public reorderCards({
-    lists,
-    sourceIndex,
-    destinationIndex,
-    sourceListId,
-    destinationListId,
-  }: {
-    lists: List[];
-    sourceIndex: number;
-    destinationIndex: number;
-    sourceListId: string;
-    destinationListId: string;
-  }): List[] {
+  public reorderCards(
+    {
+      lists,
+      sourceIndex,
+      destinationIndex,
+      sourceListId,
+      destinationListId
+    }: {
+      lists: List[];
+      sourceIndex: number;
+      destinationIndex: number;
+      sourceListId: string;
+      destinationListId: string;
+    }): List[] {
+
     const target: Card = lists.find((list) => list.id === sourceListId)
       ?.cards?.[sourceIndex];
 
