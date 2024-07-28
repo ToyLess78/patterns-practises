@@ -8,5 +8,12 @@ export default defineConfig({
   server: {
     port: 5172,
     strictPort: true,
+    proxy: {
+      '/socket.io': {
+        target: process.env.VITE_SOCKET_URL || 'http://localhost:3005',
+        ws: true,
+        changeOrigin: true,
+      },
+    },
   },
 });
