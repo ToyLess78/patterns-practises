@@ -1,23 +1,32 @@
-import { Memento } from './memento';
 import { List } from '../common/types/types';
+import { Memento, createMemento } from './memento';
 
-// PATTERN:{memento}
-export class Originator {
-  private state: List[] = [];
+type Originator = {
+  setState: (state: List[]) => Originator;
+  getState: () => List[];
+  saveToMemento: () => Memento<List[]>;
+  restoreFromMemento: (memento: Memento<List[]>) => Originator;
+};
 
-  public setState(state: List[]): void {
-    this.state = [...state];
-  }
+const createOriginator = (initialState: List[] = []): Originator => {
+  const state = [...initialState];
 
-  public getState(): List[] {
-    return this.state;
-  }
+  const setState = (newState: List[]): Originator =>
+    createOriginator([...newState]);
 
-  public saveToMemento(): Memento<List[]> {
-    return new Memento(this.getState());
-  }
+  const getState = (): List[] => state;
 
-  public restoreFromMemento(memento: Memento<List[]>): void {
-    this.setState(memento.getState());
-  }
-}
+  const saveToMemento = (): Memento<List[]> => createMemento(state);
+
+  const restoreFromMemento = (memento: Memento<List[]>): Originator =>
+    createOriginator(memento.getState());
+
+  return {
+    setState,
+    getState,
+    saveToMemento,
+    restoreFromMemento,
+  };
+};
+
+export { createOriginator };

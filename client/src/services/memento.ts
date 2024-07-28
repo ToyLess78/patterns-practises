@@ -1,12 +1,9 @@
 // PATTERN:{memento}
-export class Memento<T> {
-  private state: T;
+export type Memento<T> = {
+  getState: () => T;
+};
 
-  constructor(state: T) {
-    this.state = state;
-  }
+export const createMemento = <T>(state: T): Memento<T> => ({
+  getState: () => state,
+});
 
-  public getState(): T {
-    return this.state;
-  }
-}
