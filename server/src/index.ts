@@ -20,9 +20,7 @@ const io = new Server(httpServer, {
 const db = Database.Instance;
 const reorderService = new ReorderService();
 
-if (process.env.NODE_ENV !== 'production') {
-  db.setData(lists);
-}
+db.setData(lists);
 
 const onConnection = (socket: Socket): void => {
   new ListHandler(io, db, reorderService).handleConnection(socket);
