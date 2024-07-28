@@ -1,9 +1,9 @@
-import { useState, useEffect, useContext, useCallback } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { DraggableLocation, DropResult } from '@hello-pangea/dnd';
-import { CardEvent, ListEvent } from '../common/enums/enums';
+import { ListEvent } from '../common/enums/enums';
 import { List } from '../common/types/types';
 import { SocketContext } from '../context/socket';
-import { reorderLists, reorderCards } from '../services/reorder.service';
+import { reorderCards, reorderLists } from '../services/reorder.service';
 import { Originator } from '../services/originator';
 import { Caretaker } from '../services/caretaker';
 
@@ -22,6 +22,7 @@ const useWorkspace = () => {
       originator.setState(lists);
       caretaker.save(originator.saveToMemento());
     });
+
     socket.on(ListEvent.UPDATE, (lists: List[]) => {
       setLists(lists);
       originator.setState(lists);
@@ -33,13 +34,17 @@ const useWorkspace = () => {
         const memento = caretaker.undo();
         if (memento) {
           originator.restoreFromMemento(memento);
-          setLists(originator.getState());
+          const restoredState = originator.getState();
+          setLists([...restoredState]);
+          socket.emit(ListEvent.UPDATE, restoredState);
         }
       } else if (event.ctrlKey && event.key === 'y') {
         const memento = caretaker.redo();
         if (memento) {
           originator.restoreFromMemento(memento);
-          setLists(originator.getState());
+          const restoredState = originator.getState();
+          setLists([...restoredState]);
+          socket.emit(ListEvent.UPDATE, restoredState);
         }
       }
     };
@@ -71,23 +76,15 @@ const useWorkspace = () => {
 
       const isReorderLists = result.type === 'COLUMN';
 
+      let newLists: List[];
       if (isReorderLists) {
-        const newLists = reorderLists(lists, source.index, destination.index);
-        setLists(newLists);
-        socket.emit(ListEvent.REORDER, source.index, destination.index);
-        originator.setState(newLists);
-        caretaker.save(originator.saveToMemento());
-        return;
+        newLists = reorderLists([...lists], source.index, destination.index);
+      } else {
+        newLists = reorderCards([...lists], source, destination);
       }
 
-      const newLists = reorderCards(lists, source, destination);
       setLists(newLists);
-      socket.emit(CardEvent.REORDER, {
-        sourceListId: source.droppableId,
-        destinationListId: destination.droppableId,
-        sourceIndex: source.index,
-        destinationIndex: destination.index
-      });
+      socket.emit(ListEvent.UPDATE, newLists);
       originator.setState(newLists);
       caretaker.save(originator.saveToMemento());
     },
