@@ -45,4 +45,28 @@ inProgress.cards = [
   )
 ];
 
-export const lists = [toDo, inProgress];
+const done = new List('Done');
+done.cards = [
+  new Card(
+    'Completed setup of project',
+    'Expected result - project has been initialized and setup completed successfully'
+  ),
+  new Card(
+    'Finished adding basic structure',
+    'Expected result - the project has basic modules and structure in place'
+  ),
+  new Card(
+    'Implemented basic login feature',
+    'Expected result - users can log in using their credentials'
+  ),
+  new Card(
+    'Finalized card removal feature',
+    'Expected result - card can be removed successfully'
+  ),
+  new Card(
+    'Completed unit tests for logging service',
+    'Expected result - all unit tests for logging service are passing'
+  )
+];
+
+export const lists = [toDo, inProgress, done];
