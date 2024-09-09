@@ -42,31 +42,39 @@ inProgress.cards = [
   new Card(
     'Implement adding lists',
     'Expected result - possibility to create a new list'
+  ),
+  new Card(
+    'Implement card sorting functionality',
+    'Expected result - possibility to sort cards by title or creation date'
+  ),
+  new Card(
+    'Implement search functionality',
+    'Expected result - possibility to search for cards and lists using keywords'
+  )
+];
+
+const toTest = new List('To Test');
+toTest.cards = [
+  new Card(
+    'Test renaming functionality',
+    'Expected result - verify that renaming of lists and cards works as expected'
+  ),
+  new Card(
+    'Test adding/removing cards',
+    'Expected result - verify that adding and removing cards works as expected'
   )
 ];
 
 const done = new List('Done');
 done.cards = [
   new Card(
-    'Completed setup of project',
-    'Expected result - project has been initialized and setup completed successfully'
+    'Implement initial project setup',
+    'Completed the setup of the initial project structure'
   ),
   new Card(
-    'Finished adding basic structure',
-    'Expected result - the project has basic modules and structure in place'
-  ),
-  new Card(
-    'Implemented basic login feature',
-    'Expected result - users can log in using their credentials'
-  ),
-  new Card(
-    'Finalized card removal feature',
-    'Expected result - card can be removed successfully'
-  ),
-  new Card(
-    'Completed unit tests for logging service',
-    'Expected result - all unit tests for logging service are passing'
+    'Implement base UI components',
+    'Completed the implementation of basic UI components'
   )
 ];
 
-export const lists = [toDo, inProgress, done];
+export const lists = [toDo, inProgress, toTest, done];
