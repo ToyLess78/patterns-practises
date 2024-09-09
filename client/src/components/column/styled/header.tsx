@@ -15,12 +15,12 @@ const Header = styled.div<Props>`
   border-top-left-radius: ${BORDER_RADIUS}px;
   border-top-right-radius: ${BORDER_RADIUS}px;
   background-color: ${({ isDragging }) =>
-    isDragging ? colors.R100 : colors.R75};
+    isDragging ? colors.P300 : colors.P200};
   transition: background-color 0.2s ease;
   height: 85px;
 
   &:hover {
-    background-color: ${colors.R100};
+    background-color: ${colors.P300};
   }
 `;
 

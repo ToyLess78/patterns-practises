@@ -13,7 +13,7 @@ const DeleteButton = ({ onClick, color }: Props) => {
     <Button
       className="delete-btn"
       onClick={onClick}
-      color={color ?? colors.N30}
+      color={color ?? colors.P75}
     >
       <Icon iconName="delete" />
     </Button>
