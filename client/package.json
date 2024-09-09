@@ -1,8 +1,8 @@
 {
-  "name": "bsa-patterns-client",
+  "name": "task-flow",
   "version": "0.0.0",
   "description": "Starter for Patterns Practises and Principles homework. Binary Studio Academy",
-  "author": "Vitalii Yarmus",
+  "author": "Tetiana Bilenko",
   "license": "MIT",
   "type": "module",
   "scripts": {
