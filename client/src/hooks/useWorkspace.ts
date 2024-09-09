@@ -46,7 +46,7 @@ const useWorkspace = () => {
           originator = originator.restoreFromMemento(memento);
           const restoredState = originator.getState();
           setLists([...restoredState]);
-          socket.emit(ListEvent.UPDATE, restoredState); // Emit updated state
+          socket.emit(ListEvent.UPDATE, restoredState);
         }
       }
     };
@@ -93,7 +93,7 @@ const useWorkspace = () => {
       }
 
       setLists(newLists);
-      socket.emit(ListEvent.UPDATE, newLists); // Emit updated state
+      socket.emit(ListEvent.UPDATE, newLists);
       originator = originator.setState(newLists);
       caretaker = caretaker.save(originator.saveToMemento());
     },
